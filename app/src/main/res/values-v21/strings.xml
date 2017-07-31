@@ -1,7 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SikemasTC for Admin</string>
-    <string name="app_short_name">SIKEMAS IF</string>
-    <string name="search_item">Search</string>
     <string name="refresh_item">Refresh</string>
     <string name="iv_id_card">IDCard</string>
     <string name="edt_nrp">NRP</string>

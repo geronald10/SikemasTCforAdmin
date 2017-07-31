@@ -1,18 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="absensi.anif.its.ac.id.sikemastcforadmin.MainActivity">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_app">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            tools:context="absensi.anif.its.ac.id.sikemastcforadmin.MainActivity">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_welcome_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_welcome_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_margin="8dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="Selamat Datang di Sistem Kehadiran Mahasiswa\nTeknik Informatika ITS"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="20sp" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/vertical_guideline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintGuide_percent="0.5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_tambah_data_diri"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_141_exam"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:text="Tambah Data Diri"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="16sp"
+                android:theme="@style/WhiteButtonTheme"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/vertical_guideline"
+                app:layout_constraintTop_toBottomOf="@id/cv_welcome_message" />
+
+            <Button
+                android:id="@+id/btn_lihat_daftar_mahasiswa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_141_open_book"
+                android:paddingBottom="16dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:text="Lihat Daftar Mahasiswa"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="16sp"
+                android:theme="@style/WhiteButtonTheme"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/vertical_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/btn_tambah_data_wajah" />
+
+            <Button
+                android:id="@+id/btn_tambah_data_wajah"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_101_photograph_57"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:text="Tambah Data Wajah"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="16sp"
+                android:theme="@style/WhiteButtonTheme"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/vertical_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/btn_tambah_data_diri" />
+
+            <Button
+                android:id="@+id/btn_tambah_data_tandatangan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_141_pen_1"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:text="Tambah Data TandaTangan"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textSize="16sp"
+                android:theme="@style/WhiteButtonTheme"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toRightOf="@id/vertical_guideline"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btn_tambah_data_wajah" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

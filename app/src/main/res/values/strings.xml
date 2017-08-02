@@ -19,4 +19,7 @@
     <string name="error_msg_password">password tidak boleh kosong</string>
     <string name="error_msg_konfirm_password">konfirmasi password tidak boleh kosong</string>
     <string name="error_msg_konfirm_password_2">password tidak cocok</string>
+    <string name="wajah_terambil_label">Jumlah wajah terambil</string>
+    <string name="tv_empty_value">-</string>
+    <string name="menambah_data_set_wajah_dari_message">Menambah data wajah dari:</string>
 </resources>

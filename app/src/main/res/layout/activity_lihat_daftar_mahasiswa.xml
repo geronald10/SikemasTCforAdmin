@@ -4,6 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="absensi.anif.its.ac.id.sikemastcforadmin.LihatDaftarMahasiswaActivity">
+    tools:context="absensi.anif.its.ac.id.sikemastcforadmin.activity.LihatDaftarMahasiswaActivity">
+    <Button
+        android:id="@+id/btn_tambah_data_wajah"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_101_photograph_57"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:text="Tambah Data Wajah"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:textSize="16sp"
+        android:theme="@style/WhiteButtonTheme"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/btn_tambah_data_mahasiswa" />
 
+    <Button
+        android:id="@+id/btn_tambah_data_tandatangan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/ic_141_pen_1"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:text="Tambah Data TandaTangan"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:textSize="16sp"
+        android:theme="@style/WhiteButtonTheme"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_tambah_data_wajah" />
 </android.support.constraint.ConstraintLayout>

@@ -37,6 +37,7 @@ import java.util.Map;
 
 import absensi.anif.its.ac.id.sikemastcforadmin.R;
 import absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_diri.TambahDataDiriActivity;
+import absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_tandatangan.TambahDataTandaTanganActivity;
 import absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_wajah.InstruksiTambahDataWajahActivity;
 import absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_wajah.TambahDataWajahActivity;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.NetworkUtils;
@@ -244,7 +245,7 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.btnTambahDataWajah:
-                    if (statusDataDiri == 0) {
+                    if (statusDataWajah == 0) {
                         Intent intent = new Intent(KelolaDataDiriActivity.this, InstruksiTambahDataWajahActivity.class);
                         FileHelper newFile = new FileHelper();
                         if (isNameAlreadyUsed(newFile.getTrainingList(), nrpMahasiswa + " - " + namaMahasiswa)) {
@@ -259,6 +260,14 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.btnTambahDataTtd:
+                    if (statusDataTtd == 0) {
+                        Intent intent = new Intent(KelolaDataDiriActivity.this, TambahDataTandaTanganActivity.class);
+                        intent.putExtra("nrpMahasiswa", nrpMahasiswa);
+                        intent.putExtra("identitas_mahasiswa", nrpMahasiswa + " - " + namaMahasiswa);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Data Wajah sudah ditambahkan", Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }
@@ -365,9 +374,8 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                             pDialog.dismiss();
                             Log.d("VolleyErroyResponse", "Error");
                             //Showing toast
-                            if (index == encodedImagesList.size())
-                                Toast.makeText(KelolaDataDiriActivity.this, volleyError.getMessage(),
-                                        Toast.LENGTH_LONG).show();
+                            Toast.makeText(KelolaDataDiriActivity.this, volleyError.getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         }
                     }) {
                 @Override

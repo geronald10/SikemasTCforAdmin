@@ -37,7 +37,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="Selamat Datang di Sistem Kehadiran Mahasiswa\nTeknik Informatika ITS"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="20sp" />
+                    android:textSize="40sp" />
 
             </android.support.v7.widget.CardView>
 
@@ -61,15 +61,15 @@
                 android:paddingTop="16dp"
                 android:text="Tambah Data Mahasiswa"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:theme="@style/WhiteButtonTheme"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/vertical_guideline"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cv_welcome_message" />
 
             <Button
                 android:id="@+id/btn_lihat_daftar_mahasiswa"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
                 android:paddingEnd="16dp"
@@ -77,16 +77,15 @@
                 android:paddingTop="16dp"
                 android:text="Lihat Daftar Mahasiswa"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:theme="@style/WhiteButtonTheme"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/vertical_guideline"
+                app:layout_constraintLeft_toRightOf="@id/vertical_guideline"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_tambah_data_mahasiswa" />
 
             <Button
                 android:id="@+id/btn_generate_training_file"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
                 android:paddingEnd="16dp"
@@ -94,11 +93,10 @@
                 android:paddingTop="16dp"
                 android:text="Generate Training Data"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:theme="@style/WhiteButtonTheme"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/vertical_guideline"
+                app:layout_constraintLeft_toRightOf="@id/vertical_guideline"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_lihat_daftar_mahasiswa" />
 
         </android.support.constraint.ConstraintLayout>

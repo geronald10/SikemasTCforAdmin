@@ -1,5 +1,6 @@
 package absensi.anif.its.ac.id.sikemastcforadmin.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,8 +8,10 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -43,6 +46,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private final String TAG = MainActivity.class.getSimpleName();
     private String DIRECTORY = Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_PICTURES) + "/facerecognition/data/SVM/";
@@ -73,6 +80,13 @@ public class MainActivity extends AppCompatActivity {
         Button btnLihatDaftarMhs = (Button) findViewById(R.id.btn_lihat_daftar_mahasiswa);
         Button btnTambahDataDiri = (Button) findViewById(R.id.btn_tambah_data_mahasiswa);
         Button btnTrainingData = (Button) findViewById(R.id.btn_generate_training_file);
+
+        btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_exam),
+                null, null, null);
+        btnLihatDaftarMhs.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_open_book),
+                null, null, null);
+        btnTrainingData.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_browser),
+                null, null, null);
 
         btnLihatDaftarMhs.setOnClickListener(action);
         btnTambahDataDiri.setOnClickListener(action);
@@ -112,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             for (File file : files) {
                 try {
                     FileInputStream fileInputStreamReader = new FileInputStream(file);
-                    byte[] bytes = new byte[(int)file.length()];
+                    byte[] bytes = new byte[(int) file.length()];
                     fileInputStreamReader.read(bytes);
                     encodedFile.add(Base64.encodeToString(bytes, Base64.DEFAULT));
                     fileNameList.add(file.getName());

@@ -7,15 +7,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,20 +51,24 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class KelolaDataDiriActivity extends AppCompatActivity {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private final String TAG = KelolaDataDiriActivity.class.getSimpleName();
     public static final int ACTIVITY_INSTRUKSI_CODE = 10;
     public static final int ACTIVITY_TAMBAH_DATA_WAJAH_CODE = 20;
+    public static final int ACTIVITY_TAMBAH_DATA_DIRI_CODE = 30;
+    public static final int ACTIVITY_TAMBAH_DATA_TANDATANGAN_CODE = 40;
 
-    private int jumlahDataSetServer;
-    private ArrayList<String> imageUrlList;
     private ArrayList<String> encodedImageList;
-    private FileHelper fh;
 
     private Context mContext;
     private SweetAlertDialog pDialog;
     private TextView tvNRP, tvNama;
     private EditText edtInputNRP;
-    private ConstraintLayout clInputUser, clKelolaDataDiri;
+    private CardView cvInputUser;
+    private ScrollView svKelolaSection;
 
     private String nrpMahasiswa, namaMahasiswa;
     private int statusDataDiri, statusDataWajah, statusDataTtd, numberOfPhotos = 0;
@@ -74,13 +82,13 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView title = (TextView) mToolbar.findViewById(R.id.toolbarTitle);
         title.setVisibility(View.GONE);
-        setSupportActionBar(mToolbar);
 
+        mToolbar.setTitle("Tambah Data");
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                showBackWarning();
             }
         });
 
@@ -165,10 +173,10 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
     }
 
     private void showKelolaDataDiri() {
-        clInputUser = (ConstraintLayout) findViewById(R.id.clInputUser);
-        clKelolaDataDiri = (ConstraintLayout) findViewById(R.id.clKelolaDataDiri);
-        clInputUser.setVisibility(View.GONE);
-        clKelolaDataDiri.setVisibility(View.VISIBLE);
+        cvInputUser = (CardView) findViewById(R.id.cvInputUser);
+        svKelolaSection = (ScrollView) findViewById(R.id.sv_kelola_section);
+        cvInputUser.setVisibility(View.GONE);
+        svKelolaSection.setVisibility(View.VISIBLE);
 
         tvNRP = (TextView) findViewById(R.id.tvNrp);
         tvNama = (TextView) findViewById(R.id.tvNama);
@@ -208,13 +216,13 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
         }
         switch (statusDataTtd) {
             case 0:
-                Log.d(TAG, "Masuk Sini 0");
+                Log.d(TAG, "TTD: 0");
                 btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
                                 .getDrawable(this, R.drawable.ic_141_pen_1), null,
                         ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
                 break;
             case 1:
-                Log.d(TAG, "Masuk Sini 1");
+                Log.d(TAG, "TTD: 1");
                 btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
                                 .getDrawable(this, R.drawable.ic_141_pen_1), null,
                         ContextCompat.getDrawable(this, R.drawable.ic_check), null);
@@ -224,6 +232,10 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
         btnTambahDataDiri.setOnClickListener(action);
         btnTambahDataWajah.setOnClickListener(action);
         btnTambahDataTtd.setOnClickListener(action);
+
+        btnTambahDataDiri.setOnLongClickListener(editAction);
+        btnTambahDataWajah.setOnLongClickListener(editAction);
+        btnTambahDataTtd.setOnLongClickListener(editAction);
     }
 
     private void refresh() {
@@ -239,7 +251,7 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                         Intent intent = new Intent(KelolaDataDiriActivity.this, TambahDataDiriActivity.class);
                         intent.putExtra("nrpMahasiswa", nrpMahasiswa);
                         intent.putExtra("namaMahasiswa", namaMahasiswa);
-                        startActivity(intent);
+                        startActivityForResult(intent, ACTIVITY_TAMBAH_DATA_DIRI_CODE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Data Diri sudah ditambahkan", Toast.LENGTH_SHORT).show();
                     }
@@ -264,45 +276,163 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                         Intent intent = new Intent(KelolaDataDiriActivity.this, TambahDataTandaTanganActivity.class);
                         intent.putExtra("nrpMahasiswa", nrpMahasiswa);
                         intent.putExtra("identitas_mahasiswa", nrpMahasiswa + " - " + namaMahasiswa);
-                        startActivity(intent);
+                        startActivityForResult(intent, ACTIVITY_TAMBAH_DATA_TANDATANGAN_CODE);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Data Wajah sudah ditambahkan", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Data Tandatangan sudah ditambahkan", Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
         }
     };
 
+    View.OnLongClickListener editAction = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            switch (v.getId()) {
+                case R.id.btnTambahDataMahasiswa:
+                    if (statusDataDiri == 1) {
+                        new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Ubah Data Diri?")
+                                .setContentText("Data diri sebelumnya akan ditimpa")
+                                .setCancelText("Batal")
+                                .setConfirmText("Lanjutkan")
+                                .showCancelButton(true)
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.cancel();
+                                    }
+                                })
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        Intent intent = new Intent(KelolaDataDiriActivity.this, TambahDataDiriActivity.class);
+                                        intent.putExtra("nrpMahasiswa", nrpMahasiswa);
+                                        intent.putExtra("namaMahasiswa", namaMahasiswa);
+                                        startActivityForResult(intent, ACTIVITY_TAMBAH_DATA_DIRI_CODE);
+                                        sweetAlertDialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    } else {
+                        return false;
+                    }
+                    break;
+                case R.id.btnTambahDataWajah:
+                    if (statusDataWajah == 1) {
+                        new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Ubah Data Wajah?")
+                                .setContentText("Data wajah sebelumnya akan ditimpa")
+                                .setCancelText("Batal")
+                                .setConfirmText("Lanjutkan")
+                                .showCancelButton(true)
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.cancel();
+                                    }
+                                })
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        Intent intent = new Intent(KelolaDataDiriActivity.this, InstruksiTambahDataWajahActivity.class);
+                                        startActivityForResult(intent, ACTIVITY_INSTRUKSI_CODE);
+                                        sweetAlertDialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    } else {
+                        return false;
+                    }
+                    break;
+                case R.id.btnTambahDataTtd:
+                    if (statusDataTtd == 1) {
+                        new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Ubah Data Tandatangan?")
+                                .setContentText("Data tandatangan sebelumnya akan ditimpa")
+                                .setCancelText("Batal")
+                                .setConfirmText("Lanjutkan")
+                                .showCancelButton(true)
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.cancel();
+                                    }
+                                })
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        Intent intent = new Intent(KelolaDataDiriActivity.this, TambahDataTandaTanganActivity.class);
+                                        intent.putExtra("nrpMahasiswa", nrpMahasiswa);
+                                        intent.putExtra("identitas_mahasiswa", nrpMahasiswa + " - " + namaMahasiswa);
+                                        startActivityForResult(intent, ACTIVITY_TAMBAH_DATA_TANDATANGAN_CODE);
+                                        sweetAlertDialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    } else {
+                        return false;
+                    }
+                    break;
+            }
+            return true;
+        }
+    };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("cek", String.valueOf(requestCode));
+        switch (requestCode) {
+            case ACTIVITY_INSTRUKSI_CODE:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        Log.d(String.valueOf(resultCode), "masuk percabangan");
+                        Intent intentToTambahWajah = new Intent(mContext, TambahDataWajahActivity.class);
+                        intentToTambahWajah.putExtra("user_terlogin", nrpMahasiswa + " - " + namaMahasiswa);
+                        intentToTambahWajah.putExtra("method", TambahDataWajahActivity.TIME);
+                        intentToTambahWajah.putExtra("Folder", "Training");
+                        startActivityForResult(intentToTambahWajah, ACTIVITY_TAMBAH_DATA_WAJAH_CODE);
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        break;
+                }
+                break;
+            case ACTIVITY_TAMBAH_DATA_WAJAH_CODE:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        String resultMessage = data.getStringExtra("result_message");
+                        Toast.makeText(mContext, resultMessage, Toast.LENGTH_SHORT).show();
+                        encodedImageList = new ArrayList<>();
+                        encodedImageList = getAllEncodedImageFormat();
+                        uploadImages(encodedImageList);
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(mContext, "Terjadi kesalahan dalam pengambilan data wajah, silahkan coba lagi",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                break;
 
-        if (requestCode == ACTIVITY_INSTRUKSI_CODE) {
-            Log.d("cek", String.valueOf(resultCode));
-            if (resultCode == Activity.RESULT_OK) {
-                Log.d(String.valueOf(resultCode), "masuk percabangan");
-                Intent intentToTambahWajah = new Intent(mContext, TambahDataWajahActivity.class);
-                intentToTambahWajah.putExtra("user_terlogin", nrpMahasiswa + " - " + namaMahasiswa);
-                intentToTambahWajah.putExtra("method", TambahDataWajahActivity.TIME);
-                intentToTambahWajah.putExtra("Folder", "Training");
-                startActivityForResult(intentToTambahWajah, ACTIVITY_TAMBAH_DATA_WAJAH_CODE);
-            }
-            else if (resultCode == Activity.RESULT_CANCELED)
-                Toast.makeText(mContext, "Tidak ditemukan hasil, kesalahan dalam request internal aplikasi",
-                        Toast.LENGTH_SHORT).show();
-        }
-        else if (requestCode == ACTIVITY_TAMBAH_DATA_WAJAH_CODE) {
-            Log.d("cek", String.valueOf(resultCode));
-            if (resultCode == Activity.RESULT_OK) {
-                String resultMessage = data.getStringExtra("result_message");
-                Toast.makeText(mContext, resultMessage, Toast.LENGTH_SHORT).show();
-                encodedImageList = new ArrayList<>();
-                encodedImageList = getAllEncodedImageFormat();
-                uploadImages(encodedImageList);
-            }
-            else if (resultCode == Activity.RESULT_CANCELED)
-                Toast.makeText(mContext, "Tidak ditemukan hasil, kesalahan dalam request internal aplikasi",
-                        Toast.LENGTH_SHORT).show();
+            case ACTIVITY_TAMBAH_DATA_DIRI_CODE:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        refresh();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        break;
+                }
+                break;
+
+            case ACTIVITY_TAMBAH_DATA_TANDATANGAN_CODE:
+                Log.d("cek", String.valueOf(resultCode));
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        refresh();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        break;
+                }
+                break;
         }
     }
 
@@ -463,4 +593,31 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
         VolleySingleton.getmInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
 
+    public void showBackWarning() {
+        new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Kembali ke menu utama?")
+                .setContentText("*data yang sudah Anda tambahkan akan tetap tersimpan")
+                .setCancelText("Batal")
+                .setConfirmText("Ya")
+                .showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.cancel();
+                    }
+                })
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                        finish();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showBackWarning();
+    }
 }

@@ -1,5 +1,6 @@
 package absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_diri;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.TextInputLayout;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import absensi.anif.its.ac.id.sikemastcforadmin.R;
+import absensi.anif.its.ac.id.sikemastcforadmin.activity.MainActivity;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.NetworkUtils;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.VolleySingleton;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -205,6 +207,8 @@ public class TambahDataDiriActivity extends AppCompatActivity {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
+                            Intent returnIntent = new Intent(TambahDataDiriActivity.this, MainActivity.class);
+                            setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         }
                     })

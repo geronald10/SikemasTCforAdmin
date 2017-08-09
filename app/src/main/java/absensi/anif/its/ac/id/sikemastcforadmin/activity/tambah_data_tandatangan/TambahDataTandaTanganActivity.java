@@ -1,5 +1,6 @@
 package absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_tandatangan;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -43,6 +45,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import absensi.anif.its.ac.id.sikemastcforadmin.R;
+import absensi.anif.its.ac.id.sikemastcforadmin.activity.MainActivity;
+import absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_wajah.TambahDataWajahActivity;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.NetworkUtils;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.VolleySingleton;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -57,6 +61,7 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
     private ArrayList<String> encodedImageList;
     private signature mSignature;
     private LinearLayout mContent;
+    private TextView tvCounter;
     private View view;
     private Button btn_tambah_tandatangan_simpan;
     private String StoredPath;
@@ -70,15 +75,13 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tambah_data_tanda_tangan);
         Context mContext = this;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Kelola Dataset");
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) mToolbar.findViewById(R.id.toolbarTitle);
+        title.setVisibility(View.GONE);
 
-        // Compatibility
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            toolbar.setElevation(10f);
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setTitle("Tambah Data");
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -88,6 +91,7 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userTerlogin = intent.getStringExtra("identitas_mahasiswa");
         userId = intent.getStringExtra("nrpMahasiswa");
+
         //folder
         String DIRECTORY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/signatureverification/";
         StoredPath = DIRECTORY + userTerlogin;
@@ -100,6 +104,7 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
         mContent.addView(mSignature, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         view = mContent;
 
+        tvCounter = (TextView) findViewById(R.id.tvCounter);
         Button btn_tambah_tandatangan_cancel = (Button) findViewById(R.id.btn_tambah_tandatangan_cancel);
         Button btn_tambah_tandatangan_clear = (Button) findViewById(R.id.btn_tambah_tandatangan_clear);
         btn_tambah_tandatangan_simpan = (Button) findViewById(R.id.btn_tambah_tandatangan_simpan);
@@ -126,6 +131,7 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
                 case R.id.btn_tambah_tandatangan_simpan:
                     Log.d(TAG, "clickcount " + clickcount);
                     clickcount = clickcount + 1;
+                    tvCounter.setText(String.valueOf(clickcount));
                     if (clickcount <= 5) {
                         Log.d(TAG, "Panel Saved");
                         view.setDrawingCacheEnabled(true);
@@ -355,6 +361,10 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
+                            Intent returnIntent = new Intent(TambahDataTandaTanganActivity.this, MainActivity.class);
+                            returnIntent.putExtra("result_message", "Berhasil menambahkan data tandatangan");
+                            setResult(Activity.RESULT_OK, returnIntent);
+                            Log.d("returnintent", String.valueOf(Activity.RESULT_OK));
                             finish();
                         }
                     })

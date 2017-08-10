@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SikemasTC for Admin</string>
+    <string name="app_name">Sikemas IF for Admin</string>
     <string name="app_short_name">SIKEMAS IF</string>
     <string name="search_item">Search</string>
     <string name="refresh_item">Refresh</string>
@@ -25,4 +25,7 @@
     <string name="tandatangan_disini_hint">Tandatangan disini</string>
     <string name="memproses_data_set_title">Memproses Data Wajah...</string>
     <string name="proses_latihan_caption">Proses Latihan</string>
+    <string name="welcome_message_1">Selamat Datang</string>
+    <string name="welcome_message_2">Sistem Kehadiran Mahasiswa Teknik Informatika ITS</string>
+    <string name="string_logout">Logout</string>
 </resources>

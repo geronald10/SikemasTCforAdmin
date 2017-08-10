@@ -5,7 +5,6 @@
     android:background="@color/colorPrimary"
     android:minHeight="?attr/actionBarSize"
     android:orientation="vertical"
-    style="@style/MyToolbarTheme"
     android:theme="@style/MyToolbarTheme">
 
     <TextView

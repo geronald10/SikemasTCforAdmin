@@ -1,12 +1,8 @@
 package absensi.anif.its.ac.id.sikemastcforadmin.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +11,9 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,16 +21,12 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +36,9 @@ import java.util.Map;
 import absensi.anif.its.ac.id.sikemastcforadmin.R;
 import absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_wajah.TrainingDataWajahActivity;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.NetworkUtils;
+import absensi.anif.its.ac.id.sikemastcforadmin.utilities.SikemasSessionManager;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.VolleySingleton;
+import ch.zhaw.facerecognitionlibrary.Helpers.FileHelper;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,16 +48,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final String TAG = MainActivity.class.getSimpleName();
-    private String DIRECTORY = Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES) + "/facerecognition/data/SVM/";
     private List<String> fileNameList;
     private int numberOfFile;
     private SweetAlertDialog pDialog;
+    private SikemasSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        session = new SikemasSessionManager(this);
+        session.checkLogin();
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/FredokaOne-Regular.ttf");
         title.setTypeface(typeface);
         title.setText(R.string.app_short_name);
+        setSupportActionBar(mToolbar);
 
         Intent intent = getIntent();
         String training = intent.getStringExtra("training");
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_lihat_daftar_mahasiswa:
-                    Intent intentToDaftarMahasiswa = new Intent(MainActivity.this, PilihIdentitasActivity.class);
+                    Intent intentToDaftarMahasiswa = new Intent(MainActivity.this, DaftarMahasiswaActivity.class);
                     startActivity(intentToDaftarMahasiswa);
                     break;
                 case R.id.btn_tambah_data_mahasiswa:
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> encodedFile = new ArrayList<>();
         fileNameList = new ArrayList<>();
 
-        File dir = new File(DIRECTORY);
+        File dir = new File(FileHelper.SVM_PATH);
         File[] files = dir.listFiles();
         numberOfFile = files.length;
         Log.d("number of files", String.valueOf(numberOfFile));
@@ -218,5 +217,28 @@ public class MainActivity extends AppCompatActivity {
                     .setContentText("Terjadi kesalahan server")
                     .show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                logout();
+        }
+        return true;
+    }
+
+    private void logout() {
+        Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
+        session.logoutUser();
+        finish();
     }
 }

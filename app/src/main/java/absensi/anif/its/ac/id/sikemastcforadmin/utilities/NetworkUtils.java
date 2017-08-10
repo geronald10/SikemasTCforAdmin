@@ -2,6 +2,9 @@ package absensi.anif.its.ac.id.sikemastcforadmin.utilities;
 
 public final class NetworkUtils {
 
+    public static final String LOGIN_SIKEMAS =
+            "http://absensi.if.its.ac.id/loginmobile";
+
     public static final String GET_DATA_MAHASISWA_BY_NRP =
             "http://absensi.if.its.ac.id/editdatamhs";
     public static final String GET_ALL_DATA_MAHASISWA =

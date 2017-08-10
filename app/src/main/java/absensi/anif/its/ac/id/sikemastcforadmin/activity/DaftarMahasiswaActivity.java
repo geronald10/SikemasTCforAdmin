@@ -37,11 +37,11 @@ import absensi.anif.its.ac.id.sikemastcforadmin.model.Mahasiswa;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.NetworkUtils;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.VolleySingleton;
 
-public class PilihIdentitasActivity extends AppCompatActivity implements
+public class DaftarMahasiswaActivity extends AppCompatActivity implements
         MahasiswaAdapter.MahasiswaAdapterOnClickHandler,
         SearchView.OnQueryTextListener {
 
-    private final String TAG = PilihIdentitasActivity.class.getSimpleName();
+    private final String TAG = DaftarMahasiswaActivity.class.getSimpleName();
     private Context mContext;
     private List<Mahasiswa> mahasiswaList;
     private MahasiswaAdapter mahasiswaAdapter;
@@ -131,7 +131,7 @@ public class PilihIdentitasActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(String nrpMahasiswa, String namaMahasiswa) {
-        Intent intent = new Intent(PilihIdentitasActivity.this, TambahDataDiriActivity.class);
+        Intent intent = new Intent(DaftarMahasiswaActivity.this, TambahDataDiriActivity.class);
         intent.putExtra("nrpMahasiswa", nrpMahasiswa);
         intent.putExtra("namaMahasiswa", namaMahasiswa);
         startActivity(intent);

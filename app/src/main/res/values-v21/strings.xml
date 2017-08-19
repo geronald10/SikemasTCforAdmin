@@ -24,6 +24,15 @@
     <string name="memproses_data_set_title">Memproses Data Wajah...</string>
     <string name="proses_latihan_caption">Proses Latihan</string>
     <string name="welcome_message_1">Selamat Datang</string>
-    <string name="welcome_message_2">Sistem Kehadiran Mahasiswa Teknik Informatika ITS</string>
+    <string name="welcome_message_2">Sistem Kehadiran Mahasiswa\nTeknik Informatika ITS</string>
     <string name="string_logout">Logout</string>
+    <string name="logo_sikemas_content_desc">logo_sikemas</string>
+    <string name="login_title">Akun Admin</string>
+    <string name="password_prompt_label">Password</string>
+    <string name="email_prompt_label">Email</string>
+    <string name="sign_in_button">Masuk</string>
+    <string name="title_underline_content_desc">title_underline</string>
+    <string name="tambah_data_mahasiswa_btn_string">Tambah Data Mahasiswa</string>
+    <string name="lihat_daftar_mahasiswa_btn_string">Lihat Daftar Mahasiswa</string>
+    <string name="generate_training_data_btn_string">Generate Training Data</string>
 </resources>

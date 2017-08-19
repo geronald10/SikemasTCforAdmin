@@ -11,84 +11,94 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvInputUser"
-        android:layout_width="0dp"
+    <ScrollView
+        android:id="@+id/svInputUser"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvInputUser"
+            android:layout_width="480dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            app:cardCornerRadius="5dp">
 
-            <ImageView
-                android:id="@+id/ivUserLogo"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvInputUserCaption"
-                app:srcCompat="@drawable/ic_141_user" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tvInputUserCaption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="start"
-                android:text="Masukkan NRP Anda"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toRightOf="@+id/ivUserLogo"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/ivUserLogo"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvInputUserCaption"
+                    app:srcCompat="@drawable/ic_141_user" />
 
-            <EditText
-                android:id="@+id/edtInputUser"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="@+id/tvInputUserCaption"
-                app:layout_constraintRight_toRightOf="@+id/tvInputUserCaption"
-                app:layout_constraintTop_toBottomOf="@+id/tvInputUserCaption" />
+                <TextView
+                    android:id="@+id/tvInputUserCaption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="start"
+                    android:text="Masukkan NRP Anda"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toRightOf="@+id/ivUserLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btnInputUser"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Berikutnya"
-                android:textColor="@color/colorIcons"
-                android:theme="@style/PerkuliahanButtonActivateKuliahTheme"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtInputUser" />
+                <EditText
+                    android:id="@+id/edtInputUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tvInputUserCaption"
+                    app:layout_constraintRight_toRightOf="@+id/tvInputUserCaption"
+                    app:layout_constraintTop_toBottomOf="@+id/tvInputUserCaption" />
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+                <Button
+                    android:id="@+id/btnInputUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Berikutnya"
+                    android:textColor="@color/colorIcons"
+                    android:theme="@style/PerkuliahanButtonActivateKuliahTheme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edtInputUser" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+    </ScrollView>
 
     <ScrollView
         android:id="@+id/sv_kelola_section"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_app"
         android:visibility="gone"
+        android:layout_width="0dp"
+        android:padding="5dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_app"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cvWelcomeMessage"
@@ -112,30 +122,33 @@
                         android:gravity="start"
                         android:text="Hai, Selamat Datang di SIKEMAS IF"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="24sp" />
+                        android:textSize="40sp" />
 
                     <ImageView
                         android:id="@+id/ivIdCard"
-                        android:layout_width="64dp"
-                        android:layout_height="0dp"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         app:layout_constraintBottom_toBottomOf="@+id/tvNama"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvWelcomeMessage"
+                        app:layout_constraintTop_toBottomOf="@+id/tvWelcomeMessage"
+                        app:layout_constraintVertical_bias="0.0"
                         app:srcCompat="@drawable/ic_141_id_card" />
 
                     <TextView
                         android:id="@+id/tvNrpCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="0dp"
                         android:text="@string/tv_nrp_caption"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/colorSecondaryText"
+                        android:textSize="20sp"
                         app:layout_constraintLeft_toRightOf="@id/ivIdCard"
-                        app:layout_constraintTop_toTopOf="@id/ivIdCard" />
+                        app:layout_constraintTop_toTopOf="@+id/ivIdCard" />
 
                     <TextView
                         android:id="@+id/tvNrp"
@@ -143,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:text="5113100112"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textSize="18sp"
+                        android:textSize="32sp"
                         app:layout_constraintLeft_toLeftOf="@id/tvNrpCaption"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvNrpCaption" />
@@ -155,6 +168,7 @@
                         android:text="@string/tv_nama_mahasiswa_caption"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/colorSecondaryText"
+                        android:textSize="20sp"
                         app:layout_constraintLeft_toLeftOf="@id/tvNrpCaption"
                         app:layout_constraintTop_toBottomOf="@id/tvNrp" />
 
@@ -164,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:text="Ronald Gunawan"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textSize="18sp"
+                        android:textSize="32sp"
                         app:layout_constraintLeft_toLeftOf="@id/tvNamaCaption"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvNamaCaption" />
@@ -186,18 +200,15 @@
                 android:id="@+id/btnTambahDataMahasiswa"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:drawableEnd="@drawable/ic_add_circle"
                 android:drawablePadding="24dp"
                 android:drawableStart="@drawable/ic_141_exam"
                 android:gravity="start|center"
-                android:paddingBottom="16dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
+                android:padding="24dp"
                 android:text="Data Diri"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:theme="@style/WhiteButtonTheme"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -211,13 +222,10 @@
                 android:drawablePadding="24dp"
                 android:drawableStart="@drawable/ic_101_photograph_57"
                 android:gravity="start|center"
-                android:paddingBottom="16dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
+                android:padding="24dp"
                 android:text="Data Wajah"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:theme="@style/WhiteButtonTheme"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -231,13 +239,10 @@
                 android:drawablePadding="24dp"
                 android:drawableStart="@drawable/ic_141_pen_1"
                 android:gravity="start|center"
-                android:paddingBottom="16dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
+                android:padding="24dp"
                 android:text="Data Tanda Tangan"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:theme="@style/WhiteButtonTheme"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

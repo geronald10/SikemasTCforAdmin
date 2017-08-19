@@ -15,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private int numberOfFile;
     private SweetAlertDialog pDialog;
     private SikemasSessionManager session;
+    private SliderLayout mSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,29 @@ public class MainActivity extends AppCompatActivity {
         title.setTypeface(typeface);
         title.setText(R.string.app_short_name);
         setSupportActionBar(mToolbar);
+
+        mSlider = (SliderLayout) findViewById(R.id.slider);
+        HashMap<String, String> image_maps = new HashMap<>();
+        image_maps.put("Selamat Datang Mahasiswa Baru Teknik Informatika ITS 2017",
+                "https://lh5.googleusercontent.com/maGuK1H58Yh59W51c_kkWuGYK2Sf-EDiCDpFc9pR0_-et7mfknQw4qITgbl9NP7k-iLhlIqMZNwMQVk=w1366-h662-rw");
+        image_maps.put("Aplikasi Kehadiran Mahasiswa Teknik Informatika ITS",
+                "https://lh6.googleusercontent.com/OVYht3_rCPQjkbQJY-Kh9YEi6sc1eZFbDIf2T-wfqSUpJ4b5EMxlCUx0J7quWY4KQA8NEY23FXCPTO0=w1366-h662-rw");
+        image_maps.put("Jurusan Teknik Informatika ITS",
+                "https://lh3.googleusercontent.com/yhDLS7k0OfH9gQFrugZWs63QQwLB3Gj89xOSH_ZDxJcuTNo2blyCIBFKjTtkC6MUDVKlLpVdVEEfzrA=w1366-h662");
+
+        for (String name : image_maps.keySet()) {
+            TextSliderView textSliderView = new TextSliderView(this);
+            textSliderView
+                    .description(name)
+                    .image(image_maps.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.FitCenterCrop);
+            mSlider.addSlider(textSliderView);
+        }
+
+        mSlider.setPresetTransformer(SliderLayout.Transformer.Default);
+        mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mSlider.setCustomAnimation(new DescriptionAnimation());
+        mSlider.setDuration(10000);
 
         Intent intent = getIntent();
         String training = intent.getStringExtra("training");
@@ -240,5 +271,13 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
         session.logoutUser();
         finish();
+    }
+
+    @Override
+    protected void onStop() {
+        // To prevent a memory leak on rotation, make sure to call stopAutoCycle()
+        // on the slider before activity or fragment is destroyed
+        mSlider.stopAutoCycle();
+        super.onStop();
     }
 }

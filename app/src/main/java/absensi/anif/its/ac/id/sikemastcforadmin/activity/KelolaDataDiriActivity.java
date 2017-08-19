@@ -3,6 +3,7 @@ package absensi.anif.its.ac.id.sikemastcforadmin.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -190,43 +191,92 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
         switch (statusDataDiri) {
             case 0:
                 Log.d(TAG, "Masuk Sini 0");
-                btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                .getDrawable(this, R.drawable.ic_141_exam), null,
-                        ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
+                if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                        (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                                == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                    btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_exam_xlarge), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
+                else
+                    btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_exam), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
                 break;
             case 1:
                 Log.d(TAG, "Masuk Sini 1");
-                btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                .getDrawable(this, R.drawable.ic_141_exam), null,
-                        ContextCompat.getDrawable(this, R.drawable.ic_check), null);
+                if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                        (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                                == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+                    btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_exam), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_check_xlarge), null);
+                } else {
+                    btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_exam), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_check), null);
+                }
                 break;
         }
         switch (statusDataWajah) {
             case 0:
                 Log.d(TAG, "Masuk Sini 0");
-                btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                .getDrawable(this, R.drawable.ic_101_photograph_57), null,
-                        ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
+                if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                        (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                                == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                    btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_101_photograph_57_xlarge), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
+                else
+                    btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_101_photograph_57), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
                 break;
             case 1:
                 Log.d(TAG, "Masuk Sini 1");
-                btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                .getDrawable(this, R.drawable.ic_101_photograph_57), null,
-                        ContextCompat.getDrawable(this, R.drawable.ic_check), null);
+                if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                        (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                                == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                    btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_101_photograph_57_xlarge), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_check), null);
+                else
+                    btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_101_photograph_57), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_check), null);
                 break;
         }
         switch (statusDataTtd) {
             case 0:
                 Log.d(TAG, "TTD: 0");
-                btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                .getDrawable(this, R.drawable.ic_141_pen_1), null,
-                        ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
+                if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                        (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                                == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                    btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_pen_1_xlarge), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
+                else
+                    btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_pen_1), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_add_circle), null);
                 break;
             case 1:
                 Log.d(TAG, "TTD: 1");
-                btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                .getDrawable(this, R.drawable.ic_141_pen_1), null,
-                        ContextCompat.getDrawable(this, R.drawable.ic_check), null);
+                if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                        (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                                == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                    btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_pen_1_xlarge), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_check_xlarge), null);
+                else
+                    btnTambahDataTtd.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
+                                    .getDrawable(this, R.drawable.ic_141_pen_1), null,
+                            ContextCompat.getDrawable(this, R.drawable.ic_check), null);
                 break;
         }
 
@@ -408,6 +458,7 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                         uploadImages(encodedImageList);
                         break;
                     case Activity.RESULT_CANCELED:
+                        statusDataWajah = 0;
                         Toast.makeText(mContext, "Terjadi kesalahan dalam pengambilan data wajah, silahkan coba lagi",
                                 Toast.LENGTH_SHORT).show();
                         break;

@@ -223,15 +223,22 @@ public class TambahDataWajahActivity extends AppCompatActivity implements Camera
                                 }
                             });
 
+                            Intent returnIntent = new Intent(TambahDataWajahActivity.this, MainActivity.class);
                             // Stop after numberOfPictures (settings option)
                             if (total == numberOfPictures) {
-                                Intent returnIntent = new Intent(TambahDataWajahActivity.this, MainActivity.class);
                                 Log.d("total", String.valueOf(total));
                                 Log.d("numberOfPicture", String.valueOf(numberOfPictures));
                                 returnIntent.putExtra("result_message", "Berhasil menambahkan data wajah");
                                 returnIntent.putExtra("number_of_pictures", total);
                                 setResult(Activity.RESULT_OK, returnIntent);
                                 Log.d("returnintent", String.valueOf(Activity.RESULT_OK));
+                                finish();
+                            } else {
+                                Log.d("total", String.valueOf(total));
+                                Log.d("numberOfPicture", String.valueOf(numberOfPictures));
+                                returnIntent.putExtra("result_message", "Terjadi kesalahan dalam menambahkan data wajah");
+                                returnIntent.putExtra("number_of_pictures", total);
+                                setResult(Activity.RESULT_CANCELED, returnIntent);
                                 finish();
                             }
                             capturePressed = false;

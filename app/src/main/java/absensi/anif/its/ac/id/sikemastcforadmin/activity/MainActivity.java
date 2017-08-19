@@ -1,9 +1,14 @@
 package absensi.anif.its.ac.id.sikemastcforadmin.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,9 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +33,6 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,12 +63,22 @@ public class MainActivity extends AppCompatActivity {
     private SikemasSessionManager session;
     private SliderLayout mSlider;
 
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         session = new SikemasSessionManager(this);
         session.checkLogin();
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkCameraPermission() && checkStorageRPermission() && checkStorageWPermission()) {
+                Log.e("permission", "Permission already granted.");
+            } else {
+                requestPermission();
+            }
+        }
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,28 +88,34 @@ public class MainActivity extends AppCompatActivity {
         title.setText(R.string.app_short_name);
         setSupportActionBar(mToolbar);
 
-        mSlider = (SliderLayout) findViewById(R.id.slider);
-        HashMap<String, String> image_maps = new HashMap<>();
-        image_maps.put("Selamat Datang Mahasiswa Baru Teknik Informatika ITS 2017",
-                "https://lh5.googleusercontent.com/maGuK1H58Yh59W51c_kkWuGYK2Sf-EDiCDpFc9pR0_-et7mfknQw4qITgbl9NP7k-iLhlIqMZNwMQVk=w1366-h662-rw");
-        image_maps.put("Aplikasi Kehadiran Mahasiswa Teknik Informatika ITS",
-                "https://lh6.googleusercontent.com/OVYht3_rCPQjkbQJY-Kh9YEi6sc1eZFbDIf2T-wfqSUpJ4b5EMxlCUx0J7quWY4KQA8NEY23FXCPTO0=w1366-h662-rw");
-        image_maps.put("Jurusan Teknik Informatika ITS",
-                "https://lh3.googleusercontent.com/yhDLS7k0OfH9gQFrugZWs63QQwLB3Gj89xOSH_ZDxJcuTNo2blyCIBFKjTtkC6MUDVKlLpVdVEEfzrA=w1366-h662");
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            mSlider = (SliderLayout) findViewById(R.id.slider);
 
-        for (String name : image_maps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(this);
-            textSliderView
-                    .description(name)
-                    .image(image_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.FitCenterCrop);
-            mSlider.addSlider(textSliderView);
+            HashMap<String, String> image_maps = new HashMap<>();
+            image_maps.put("Selamat Datang Mahasiswa Baru Teknik Informatika ITS 2017",
+                    "https://www.dropbox.com/s/6pm7gthkhg8yuei/TeknikInformatikaITS%281%29.jpg?raw=1");
+            image_maps.put("Aplikasi Kehadiran Mahasiswa Teknik Informatika ITS",
+                    "https://www.dropbox.com/s/id2j5iug3ieivwc/aplikasi_sikemas.png?raw=1");
+            image_maps.put("Jurusan Teknik Informatika ITS",
+                    "https://www.dropbox.com/s/f9uab293kc27id6/JurusanTeknikInformatikaITS.jpg?raw=1");
+
+            for (String name : image_maps.keySet()) {
+                TextSliderView textSliderView = new TextSliderView(this);
+                textSliderView
+                        .description(name)
+                        .image(image_maps.get(name))
+                        .setScaleType(BaseSliderView.ScaleType.FitCenterCrop);
+                mSlider.addSlider(textSliderView);
+            }
+
+            mSlider.setPresetTransformer(SliderLayout.Transformer.Default);
+            mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+            mSlider.setCustomAnimation(new DescriptionAnimation());
+            mSlider.setDuration(7000);
         }
-
-        mSlider.setPresetTransformer(SliderLayout.Transformer.Default);
-        mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mSlider.setCustomAnimation(new DescriptionAnimation());
-        mSlider.setDuration(10000);
 
         Intent intent = getIntent();
         String training = intent.getStringExtra("training");
@@ -111,12 +129,24 @@ public class MainActivity extends AppCompatActivity {
         Button btnTambahDataDiri = (Button) findViewById(R.id.btn_tambah_data_mahasiswa);
         Button btnTrainingData = (Button) findViewById(R.id.btn_generate_training_file);
 
-        btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_exam),
-                null, null, null);
-        btnLihatDaftarMhs.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_open_book),
-                null, null, null);
-        btnTrainingData.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_browser),
-                null, null, null);
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_exam_xlarge),
+                    null, null, null);
+            btnLihatDaftarMhs.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_open_book_xlarge),
+                    null, null, null);
+            btnTrainingData.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_browser_xlarge),
+                    null, null, null);
+        } else {
+            btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_exam),
+                    null, null, null);
+            btnLihatDaftarMhs.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_open_book),
+                    null, null, null);
+            btnTrainingData.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_141_browser),
+                    null, null, null);
+        }
 
         btnLihatDaftarMhs.setOnClickListener(action);
         btnTambahDataDiri.setOnClickListener(action);
@@ -277,7 +307,48 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         // To prevent a memory leak on rotation, make sure to call stopAutoCycle()
         // on the slider before activity or fragment is destroyed
-        mSlider.stopAutoCycle();
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            mSlider.stopAutoCycle();
+        }
         super.onStop();
+    }
+
+    private boolean checkCameraPermission() {
+        int result = ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CAMERA);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean checkStorageRPermission() {
+        int result = ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean checkStorageWPermission() {
+        int result = ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.INTERNET,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(MainActivity.this,
+                            "Permission accepted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "Permission denied", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
     }
 }

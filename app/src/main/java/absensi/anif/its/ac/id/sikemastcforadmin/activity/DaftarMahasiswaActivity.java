@@ -3,8 +3,10 @@ package absensi.anif.its.ac.id.sikemastcforadmin.activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import absensi.anif.its.ac.id.sikemastcforadmin.R;
@@ -38,7 +43,6 @@ import absensi.anif.its.ac.id.sikemastcforadmin.utilities.NetworkUtils;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.VolleySingleton;
 
 public class DaftarMahasiswaActivity extends AppCompatActivity implements
-        MahasiswaAdapter.MahasiswaAdapterOnClickHandler,
         SearchView.OnQueryTextListener {
 
     private final String TAG = DaftarMahasiswaActivity.class.getSimpleName();
@@ -70,15 +74,24 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rvPilihMahasiswa);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pbLoadingIndikator);
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            GridLayoutManager layoutManager =
+                    new GridLayoutManager(mContext, 3);
+            mRecyclerView.setLayoutManager(layoutManager);
+        } else {
+            LinearLayoutManager layoutManager =
+                    new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+            mRecyclerView.setLayoutManager(layoutManager);
+        }
 
         mahasiswaList = new ArrayList<>();
         getAllMahasiswaList();
 
-        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mahasiswaAdapter = new MahasiswaAdapter(mContext, this, mahasiswaList);
+        mahasiswaAdapter = new MahasiswaAdapter(mContext, mahasiswaList);
         mRecyclerView.setAdapter(mahasiswaAdapter);
     }
 
@@ -95,7 +108,7 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
                             mahasiswaList.clear();
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray listMahasiswa = jsonObject.getJSONArray("listmhs");
-                            for (int i=0; i<listMahasiswa.length(); i++) {
+                            for (int i = 0; i < listMahasiswa.length(); i++) {
                                 JSONObject mahasiswa = listMahasiswa.getJSONObject(i);
                                 String nrpMahasiswa = mahasiswa.getString("nrp");
                                 String namaMahasiswa = mahasiswa.getString("nama");
@@ -105,10 +118,22 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
                                     statusDataDiri = 0;
                                 else
                                     statusDataDiri = 1;
+                                JSONArray wajah = mahasiswa.getJSONArray("wajah");
+                                JSONArray signature = mahasiswa.getJSONArray("signature");
+                                int statusDataWajah = wajah.length();
+                                int statusDataTtd = signature.length();
 
-                                Mahasiswa newMahasiswa = new Mahasiswa(nrpMahasiswa, namaMahasiswa, statusDataDiri);
+                                Mahasiswa newMahasiswa = new Mahasiswa(nrpMahasiswa, namaMahasiswa, statusDataDiri,
+                                        statusDataWajah, statusDataTtd);
                                 mahasiswaList.add(newMahasiswa);
                             }
+                            // Sorting
+                            Collections.sort(mahasiswaList, new Comparator<Mahasiswa>() {
+                                @Override
+                                public int compare(Mahasiswa peserta1, Mahasiswa peserta2) {
+                                    return peserta1.getNrp().compareTo(peserta2.getNrp());
+                                }
+                            });
                             mahasiswaAdapter.notifyDataSetChanged();
                             showDataList();
                         } catch (JSONException e) {
@@ -127,14 +152,6 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
             }
         });
         VolleySingleton.getmInstance(getApplicationContext()).addToRequestQueue(stringRequest);
-    }
-
-    @Override
-    public void onClick(String nrpMahasiswa, String namaMahasiswa) {
-        Intent intent = new Intent(DaftarMahasiswaActivity.this, TambahDataDiriActivity.class);
-        intent.putExtra("nrpMahasiswa", nrpMahasiswa);
-        intent.putExtra("namaMahasiswa", namaMahasiswa);
-        startActivity(intent);
     }
 
     private void showLoading() {

@@ -41,7 +41,7 @@
             android:label="Tambah Data Diri" />
         <activity
             android:name=".activity.DaftarMahasiswaActivity"
-            android:label="Pilih Identitas"
+            android:label="Daftar Mahasiswa Teknik Informatika ITS"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.app.searchable"

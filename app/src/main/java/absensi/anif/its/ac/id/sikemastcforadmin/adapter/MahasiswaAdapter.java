@@ -30,8 +30,6 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.Maha
     private List<Mahasiswa> filteredMahasiswaList;
     private Context mContext;
 
-    final private MahasiswaAdapterOnClickHandler mClickHandler;
-
     @Override
     public Filter getFilter() {
         if(mahasiswaFilter == null)
@@ -39,13 +37,8 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.Maha
         return mahasiswaFilter;
     }
 
-    public interface MahasiswaAdapterOnClickHandler {
-        void onClick(String nrpMahasiswa, String namaMahasiswa);
-    }
-
-    public MahasiswaAdapter(Context context, MahasiswaAdapterOnClickHandler clickHandler, List<Mahasiswa> listMahasiswa) {
+    public MahasiswaAdapter(Context context, List<Mahasiswa> listMahasiswa) {
         mContext = context;
-        mClickHandler = clickHandler;
         mahasiswaList = listMahasiswa;
         this.filteredMahasiswaList = listMahasiswa;
     }
@@ -64,19 +57,58 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.Maha
         String nrpMahasiswa = currentMahasiswa.getNrp();
         String namaMahasiswa = currentMahasiswa.getNama();
         int statusDataDiri = currentMahasiswa.getStatusDataDiri();
+        int statusDataWajah = currentMahasiswa.getStatusDataWajah();
+        int statusDataTtd = currentMahasiswa.getStatusDataTtd();
 
         holder.tvNrp.setText(nrpMahasiswa);
         holder.tvNama.setText(namaMahasiswa);
+
+        int result = 0;
+
         switch (statusDataDiri) {
             case 0:
-                holder.ibTambahDataDiri.setImageResource(R.drawable.ic_add_circle);
-                holder.ibTambahDataDiri.setColorFilter(ContextCompat.getColor(mContext, R.color.colorStatusIdle));
-                holder.ivStatusDataDiri.setImageResource(R.drawable.circle_gray);
+                holder.ivStatusDataDiri.setImageResource(R.drawable.ic_remove);
                 break;
             case 1:
-                holder.ibTambahDataDiri.setImageResource(R.drawable.ic_check);
-                holder.ibTambahDataDiri.setColorFilter(ContextCompat.getColor(mContext, R.color.colorStatusHadir));
-                holder.ivStatusDataDiri.setImageResource(R.drawable.circle_green);
+                holder.ivStatusDataDiri.setImageResource(R.drawable.ic_check);
+                result += 1;
+                break;
+        }
+
+        if (statusDataWajah == 10) {
+            holder.ivStatusDataWajah.setImageResource(R.drawable.ic_check);
+            result += 1;
+        }
+        else if (statusDataWajah == 0)
+            holder.ivStatusDataWajah.setImageResource(R.drawable.ic_remove);
+        else if (statusDataWajah < 10)
+            holder.ivStatusDataWajah.setImageResource(R.drawable.ic_warning);
+        else
+            holder.ivStatusDataWajah.setImageResource(R.drawable.ic_close);
+
+        if (statusDataTtd == 5) {
+            holder.ivStatusDataTtd.setImageResource(R.drawable.ic_check);
+            result += 1;
+        }
+        else if (statusDataTtd == 0)
+            holder.ivStatusDataTtd.setImageResource(R.drawable.ic_remove);
+        else if (statusDataTtd < 5)
+            holder.ivStatusDataTtd.setImageResource(R.drawable.ic_warning);
+        else
+            holder.ivStatusDataTtd.setImageResource(R.drawable.ic_close);
+
+        switch (result) {
+            case 0:
+                holder.ivStatusData.setImageResource(R.color.colorStatusIdle);
+                break;
+            case 1:
+                holder.ivStatusData.setImageResource(R.color.colorStatusIjin);
+                break;
+            case 2:
+                holder.ivStatusData.setImageResource(R.color.colorStatusIjin);
+                break;
+            case 3:
+                holder.ivStatusData.setImageResource(R.color.colorStatusHadir);
                 break;
         }
     }
@@ -86,38 +118,23 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.Maha
         return mahasiswaList.size();
     }
 
-    class MahasiswaAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MahasiswaAdapterViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvNrp;
         private TextView tvNama;
+        private ImageView ivStatusData;
         private ImageView ivStatusDataDiri;
-        private ImageButton ibTambahDataDiri;
+        private ImageView ivStatusDataWajah;
+        private ImageView ivStatusDataTtd;
 
         public MahasiswaAdapterViewHolder(View itemView) {
             super(itemView);
             tvNrp = (TextView) itemView.findViewById(R.id.tv_nrp_peserta);
             tvNama = (TextView) itemView.findViewById(R.id.tv_nama_peserta);
+            ivStatusData = (ImageView) itemView.findViewById(R.id.iv_status_data);
             ivStatusDataDiri = (ImageView) itemView.findViewById(R.id.iv_status_data_diri);
-            ibTambahDataDiri = (ImageButton) itemView.findViewById(R.id.ib_tambah_data_diri);
-
-            ibTambahDataDiri.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            String nrpMahasiswa = mahasiswaList.get(adapterPosition).getNrp();
-            String namaMahasiswa = mahasiswaList.get(adapterPosition).getNama();
-            int statusDataDiri = mahasiswaList.get(adapterPosition).getStatusDataDiri();
-            if (statusDataDiri == 0) {
-                switch (v.getId()) {
-                    case R.id.ib_tambah_data_diri:
-                        mClickHandler.onClick(nrpMahasiswa, namaMahasiswa);
-                        break;
-                }
-            } else {
-                Toast.makeText(mContext, "Data sudah ditambahkan", Toast.LENGTH_SHORT).show();
-            }
+            ivStatusDataWajah = (ImageView) itemView.findViewById(R.id.iv_status_data_wajah);
+            ivStatusDataTtd = (ImageView) itemView.findViewById(R.id.iv_status_data_ttd);
         }
     }
 

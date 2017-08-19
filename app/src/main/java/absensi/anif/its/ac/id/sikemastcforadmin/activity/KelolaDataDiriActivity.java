@@ -210,7 +210,7 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                         (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
                                 == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
                     btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                    .getDrawable(this, R.drawable.ic_141_exam), null,
+                                    .getDrawable(this, R.drawable.ic_141_exam_xlarge), null,
                             ContextCompat.getDrawable(this, R.drawable.ic_check_xlarge), null);
                 } else {
                     btnTambahDataDiri.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
@@ -242,10 +242,10 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                                 == Configuration.SCREENLAYOUT_SIZE_XLARGE)
                     btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
                                     .getDrawable(this, R.drawable.ic_101_photograph_57_xlarge), null,
-                            ContextCompat.getDrawable(this, R.drawable.ic_check), null);
+                            ContextCompat.getDrawable(this, R.drawable.ic_check_xlarge), null);
                 else
                     btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                    .getDrawable(this, R.drawable.ic_101_photograph_57), null,
+                                    .getDrawable(this, R.drawable.ic_101_photograph_57_xlarge), null,
                             ContextCompat.getDrawable(this, R.drawable.ic_check), null);
                 break;
         }
@@ -310,13 +310,7 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                 case R.id.btnTambahDataWajah:
                     if (statusDataWajah == 0) {
                         Intent intent = new Intent(KelolaDataDiriActivity.this, InstruksiTambahDataWajahActivity.class);
-                        FileHelper newFile = new FileHelper();
-                        if (isNameAlreadyUsed(newFile.getTrainingList(), nrpMahasiswa + " - " + namaMahasiswa)) {
-                            Log.d("TrainingList", String.valueOf(newFile.getTrainingList()));
-                            Toast.makeText(getApplicationContext(), "Data wajah ditemukan", Toast.LENGTH_SHORT).show();
-                        } else {
-                            startActivityForResult(intent, ACTIVITY_INSTRUKSI_CODE);
-                        }
+                        startActivityForResult(intent, ACTIVITY_INSTRUKSI_CODE);
                         break;
                     } else {
                         Toast.makeText(getApplicationContext(), "Data Wajah sudah ditambahkan", Toast.LENGTH_SHORT).show();

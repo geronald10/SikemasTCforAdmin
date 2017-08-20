@@ -245,7 +245,7 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
                             ContextCompat.getDrawable(this, R.drawable.ic_check_xlarge), null);
                 else
                     btnTambahDataWajah.setCompoundDrawablesWithIntrinsicBounds(ContextCompat
-                                    .getDrawable(this, R.drawable.ic_101_photograph_57_xlarge), null,
+                                    .getDrawable(this, R.drawable.ic_101_photograph_57), null,
                             ContextCompat.getDrawable(this, R.drawable.ic_check), null);
                 break;
         }

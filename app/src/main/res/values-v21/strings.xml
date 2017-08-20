@@ -35,4 +35,6 @@
     <string name="tambah_data_mahasiswa_btn_string">Tambah Data Mahasiswa</string>
     <string name="lihat_daftar_mahasiswa_btn_string">Lihat Daftar Mahasiswa</string>
     <string name="generate_training_data_btn_string">Generate Training Data</string>
+    <string name="total_data_lengkap_string_caption">Total Data Lengkap</string>
+    <string name="status_data_mahasiswa_title_string">Status Data Mahasiswa</string>
 </resources>

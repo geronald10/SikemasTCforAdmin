@@ -21,7 +21,7 @@ public class LibraryPreference {
     public static final String KEY_NIGHT_PORTRAIT_MODE = "key_night_portrait";
     public static final String KEY_EXPOSURE = "key_exposure_compensation";
     public static final String KEY_CAMERA_VIEW_WIDTH = "key_maximum_camera_view_width";
-    public static final String KEY_CAMERA_VIEW_HEIGHT = " key_maximum_camera_view_height";
+    public static final String KEY_CAMERA_VIEW_HEIGHT = "key_maximum_camera_view_height";
     public static final String KEY_NUMBER_OF_PICTURES = "key_numberOfPictures"; // int 20
     public static final String KEY_TIMERDIFF = "key_timerDiff"; // int 500
     public static final String KEY_FACE_SIZE = "key_faceSize"; // int 224
@@ -75,7 +75,7 @@ public class LibraryPreference {
         editor.putString(KEY_NIGHT_PORTRAIT_MODE, "false");
         editor.putString(KEY_EXPOSURE, "50");
         editor.putString(KEY_CAMERA_VIEW_WIDTH, "1280");
-        editor.putString(KEY_CAMERA_VIEW_HEIGHT, "960");
+        editor.putString(KEY_CAMERA_VIEW_HEIGHT, "720");
         editor.putString(KEY_NUMBER_OF_PICTURES, "20");
         editor.putString(KEY_TIMERDIFF, "500");
         editor.putString(KEY_FACE_SIZE, "224");

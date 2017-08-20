@@ -2,8 +2,8 @@ package absensi.anif.its.ac.id.sikemastcforadmin.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,11 +35,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import absensi.anif.its.ac.id.sikemastcforadmin.R;
-import absensi.anif.its.ac.id.sikemastcforadmin.activity.tambah_data_diri.TambahDataDiriActivity;
 import absensi.anif.its.ac.id.sikemastcforadmin.adapter.MahasiswaAdapter;
 import absensi.anif.its.ac.id.sikemastcforadmin.model.Mahasiswa;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.NetworkUtils;
 import absensi.anif.its.ac.id.sikemastcforadmin.utilities.VolleySingleton;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class DaftarMahasiswaActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener {
@@ -50,14 +49,21 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
     private List<Mahasiswa> mahasiswaList;
     private MahasiswaAdapter mahasiswaAdapter;
     private RecyclerView mRecyclerView;
+    private int jumlahMahasiswa, jumlahDataLengkap;
+    private TextView tvJumlahMahasiswa;
+    private TextView tvJumlahDataLengkap;
+    private SweetAlertDialog pDialog;
 
     private ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pilih_identitas);
+        setContentView(R.layout.activity_identitas_mahasiswa);
         mContext = this;
+
+        tvJumlahMahasiswa = (TextView) findViewById(R.id.tv_jumlah_mahasiswa);
+        tvJumlahDataLengkap = (TextView) findViewById(R.id.tv_jumlah_data_lengkap);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView title = (TextView) mToolbar.findViewById(R.id.toolbarTitle);
@@ -97,6 +103,8 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
 
     public void getAllMahasiswaList() {
         Log.d(TAG, "call getAllMahasiswaList Method");
+        jumlahMahasiswa = 0;
+        jumlahDataLengkap = 0;
         showLoading();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 NetworkUtils.GET_ALL_DATA_MAHASISWA,
@@ -123,6 +131,9 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
                                 int statusDataWajah = wajah.length();
                                 int statusDataTtd = signature.length();
 
+                                if (statusDataDiri == 1 && statusDataWajah == 10 && statusDataTtd == 5)
+                                    jumlahDataLengkap += 1;
+
                                 Mahasiswa newMahasiswa = new Mahasiswa(nrpMahasiswa, namaMahasiswa, statusDataDiri,
                                         statusDataWajah, statusDataTtd);
                                 mahasiswaList.add(newMahasiswa);
@@ -135,6 +146,7 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
                                 }
                             });
                             mahasiswaAdapter.notifyDataSetChanged();
+                            jumlahMahasiswa = mahasiswaList.size();
                             showDataList();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -154,14 +166,12 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
         VolleySingleton.getmInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
 
-    private void showLoading() {
-        mRecyclerView.setVisibility(View.GONE);
-        mLoadingIndicator.setVisibility(View.VISIBLE);
-    }
-
     private void showDataList() {
+        pDialog.dismiss();
         mLoadingIndicator.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+        tvJumlahMahasiswa.setText(String.valueOf(jumlahMahasiswa));
+        tvJumlahDataLengkap.setText(String.valueOf(jumlahDataLengkap));
     }
 
     @Override
@@ -196,5 +206,17 @@ public class DaftarMahasiswaActivity extends AppCompatActivity implements
     public boolean onQueryTextChange(String newText) {
         mahasiswaAdapter.getFilter().filter(newText);
         return true;
+    }
+
+    private void showLoading() {
+        mRecyclerView.setVisibility(View.GONE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        tvJumlahMahasiswa.setText(R.string.tv_empty_value);
+        tvJumlahDataLengkap.setText(R.string.tv_empty_value);
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 }

@@ -88,36 +88,7 @@ public class TambahDataWajahActivity extends AppCompatActivity implements Camera
         }
         name = intent.getStringExtra("user_terlogin");
         method = intent.getIntExtra("method", 0);
-//        switchCaptureMode = (Switch) findViewById(R.id.switch_capture_mode);
-//        btnCapture = (ImageButton) findViewById(R.id.btn_capture);
 
-//        switchCaptureMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    method = TIME;
-//                    Toast.makeText(getApplicationContext(), "Menambahkan gambar secara OTOMATIS",
-//                            Toast.LENGTH_SHORT).show();
-//                } else {
-//                    method = MANUALLY;
-//                    Toast.makeText(getApplicationContext(), "Menambahkan gambar secara MANUAL",
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-//        if (method == MANUALLY) {
-//            btnCapture.setVisibility(View.VISIBLE);
-//            btnCapture.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    capturePressed = true;
-//                }
-//            });
-//        } else {
-//            btnCapture.setVisibility(View.GONE);
-//            capturePressed = false;
-//        }
         if (method == MANUALLY) {
             capturePressed = true;
         } else {

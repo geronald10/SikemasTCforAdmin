@@ -1,19 +1,14 @@
 package absensi.anif.its.ac.id.sikemastcforadmin.adapter;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.media.Image;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -46,7 +41,7 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.Maha
     @Override
     public MahasiswaAdapter.MahasiswaAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.content_pilih_identitas, viewGroup, false);
+                .inflate(R.layout.content_identitas_mahasiswa, viewGroup, false);
         view.setFocusable(true);
         return new MahasiswaAdapterViewHolder(view);
     }

@@ -1,5 +1,6 @@
 package absensi.anif.its.ac.id.sikemastcforadmin.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final String TAG = MainActivity.class.getSimpleName();
+    private Context mContext;
     private List<String> fileNameList;
     private int numberOfFile;
     private SweetAlertDialog pDialog;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
         session = new SikemasSessionManager(this);
         session.checkLogin();
 
@@ -166,8 +169,29 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intentToTambahDataDiri);
                     break;
                 case R.id.btn_generate_training_file:
-                    Intent intentToTrainingData = new Intent(MainActivity.this, TrainingDataWajahActivity.class);
-                    startActivity(intentToTrainingData);
+                    new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Training Data sekarang?")
+                            .setContentText("Training Data yang dihasilkan berasal dari data-data yang telah diambil" +
+                                    " dari perangkat ini.")
+                            .setCancelText("Batal")
+                            .setConfirmText("Iya")
+                            .showCancelButton(true)
+                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.cancel();
+                                }
+                            })
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    Intent intentToTrainingData = new Intent(MainActivity.this,
+                                            TrainingDataWajahActivity.class);
+                                    startActivity(intentToTrainingData);
+                                    sweetAlertDialog.dismiss();
+                                }
+                            })
+                            .show();
                     break;
             }
         }
@@ -314,6 +338,17 @@ public class MainActivity extends AppCompatActivity {
             mSlider.stopAutoCycle();
         }
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                == Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                        == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            mSlider.startAutoCycle();
+        }
+        super.onResume();
     }
 
     private boolean checkCameraPermission() {

@@ -666,4 +666,9 @@ public class KelolaDataDiriActivity extends AppCompatActivity {
     public void onBackPressed() {
         showBackWarning();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
 }

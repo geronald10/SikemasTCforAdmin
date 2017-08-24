@@ -68,12 +68,13 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
     private File dir;
     private Bitmap bitmap;
     int clickcount = 0;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_data_tanda_tangan);
-        Context mContext = this;
+        mContext = this;
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView title = (TextView) mToolbar.findViewById(R.id.toolbarTitle);
@@ -131,8 +132,8 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
                 case R.id.btn_tambah_tandatangan_simpan:
                     Log.d(TAG, "clickcount " + clickcount);
                     clickcount = clickcount + 1;
-                    tvCounter.setText(String.valueOf(clickcount));
                     if (clickcount <= 5) {
+                        tvCounter.setText(String.valueOf(clickcount));
                         Log.d(TAG, "Panel Saved");
                         view.setDrawingCacheEnabled(true);
                         mSignature.save(view);
@@ -193,6 +194,7 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
                 Log.v("log_tag", e.toString());
             }
         }
+
         public void clear() {
             path.reset();
             invalidate();
@@ -332,7 +334,7 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
                     Map<String, String> params = new HashMap<>();
                     // Adding parameters
                     params.put("image", image);
-                    params.put("image_name", userTerlogin + "-" + (index+1));
+                    params.put("image_name", userTerlogin + "-" + (index + 1));
                     params.put("user_id", userId);
 
                     return params;
@@ -356,7 +358,7 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
             pDialog.dismiss();
             new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                     .setTitleText("Berhasil!")
-                    .setContentText("Data wajah berhasil diunggah")
+                    .setContentText("Data tandatangan berhasil diunggah")
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -377,7 +379,23 @@ public class TambahDataTandaTanganActivity extends AppCompatActivity {
             pDialog.dismiss();
             new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("Gagal!")
-                    .setContentText("Terjadi kesalahan server")
+                    .setContentText("Terjadi kesalahan server, silakan kirim ulang atau coba tandatangan lagi")
+                    .setConfirmText("Kirim")
+                    .setCancelText("Ulang Tandatangan")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            uploadImages(encodedImageList);
+                        }
+                    })
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            clickcount = 0;
+                        }
+                    })
                     .show();
         }
     }
